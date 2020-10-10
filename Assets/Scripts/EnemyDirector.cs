@@ -5,23 +5,23 @@ using UnityEngine;
 public class EnemyDirector : MonoBehaviour
 {
 
-    public float health = 50f;
+    //public float health = 50f;
     public CharacterController enemyController;
     public Transform playerTransform;
     public Transform enemyTransform;
     public AudioSource closeRangeAudio;
-    public AudioSource dieAudio;
+    //public AudioSource dieAudio;
     public float closeRangeDistance = 40f;
     public float distance;
     public float speed = 12f;
     public float gravity = -9.81f;
-    public bool isDead = false;
+    //public bool isDead = false;
     Vector3 velocity;
 
     // Update is called once per frame
     public void Update()
     {
-        // Apply Audio for Enemy
+        // Apply BGM for Enemy
         Audio();
 
         float x = 0;
@@ -57,7 +57,7 @@ public class EnemyDirector : MonoBehaviour
     // Plays, Stops or Adjust Volume for Enemy Proximity Audio
     private void Audio()
     {
-        if (closeRangeAudio != null && !isDead)
+        if (closeRangeAudio != null && gameObject.GetComponent<Health>().IsAlive())
         {
             distance = Vector3.Distance(playerTransform.position, enemyTransform.position);
 
@@ -79,66 +79,52 @@ public class EnemyDirector : MonoBehaviour
     }
 
     // Record Damage from hit
-    public void TakeDamage(float amount)
-    {
-        health -= amount;
-
-        if (health <= 0f)
-        {
-            StartCoroutine(Die());
-        }
-    }
-
-    public IEnumerator Die()
-    {
-        if (this.health <= 0f && !isDead)
-        {
-            this.isDead = true;
-
-            if (closeRangeAudio != null && closeRangeAudio.isPlaying)
-            {
-                this.closeRangeAudio.Stop();
-            }
-
-            if (this.dieAudio != null)
-            {
-                this.dieAudio.Play();
-            }
-
-
-            //gameObject.GetComponent<Renderer>().enabled = false;
-            //yield return null;
-
-            //if (renderer != null)
-            //{
-            //
-            //    
-            //    Debug.Log("Setting transparent...");
-            //    var colorToAdjust = renderer.material.color;
-            //    colorToAdjust.a = 0f;
-            //    renderer.material.color = colorToAdjust;
-            //
-            //}
-
-            float waitTime = 0;
-
-            if (dieAudio != null)
-            {
-                waitTime = dieAudio.clip.length;
-            }
-
-
-            yield return new WaitForSeconds(waitTime);
-            if (dieAudio != null)
-            {
-                this.dieAudio.Stop();
-            }
-            Destroy(gameObject);
-
-            
-        }
-
-    }
+   // public void TakeDamage(float amount)
+   // {
+   //     health -= amount;
+   // 
+   //     if (health <= 0f)
+   //     {
+   //         StartCoroutine(Die());
+   //     }
+   // }
+   // 
+   // public IEnumerator Die()
+   // {
+   //     Debug.Log("DIE CALLED??@??!");
+   // 
+   //     if (this.health <= 0f && !isDead)
+   //     {
+   //         this.isDead = true;
+   // 
+   //         if (closeRangeAudio != null && closeRangeAudio.isPlaying)
+   //         {
+   //             this.closeRangeAudio.Stop();
+   //         }
+   // 
+   //         if (this.dieAudio != null)
+   //         {
+   //             this.dieAudio.Play();
+   //         }
+   // 
+   // 
+   //         float waitTime = 0;
+   // 
+   //         if (dieAudio != null)
+   //         {
+   //             waitTime = dieAudio.clip.length -.5f;
+   //             dieAudio.PlayOneShot(dieAudio.clip);
+   //         }
+   // 
+   // 
+   //         yield return new WaitForSeconds(waitTime);
+   //      
+   //         Destroy(gameObject);
+   // 
+   //         
+   //     }
+   // 
+   // }
 
 }
 

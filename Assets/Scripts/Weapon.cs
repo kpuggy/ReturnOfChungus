@@ -17,6 +17,10 @@ public class Weapon : MonoBehaviour
     public Animator animator;
     public bool reloadingNow = false;
 
+    public AudioSource shootAudio;
+
+    public bool isAutomaticFire = false;
+
 
     private float nextTimeToFire = 0f;
     // Update is called once per frame
@@ -30,12 +34,25 @@ public class Weapon : MonoBehaviour
 
     void Update()
     {
+
+        bool inputToFire = false;
+
+        if (isAutomaticFire)
+        {
+            inputToFire = Input.GetButton("Fire1");
+        } else
+        {
+            inputToFire = Input.GetButtonDown("Fire1");
+        }
+
         // Check if gun has been fired
-        if (Input.GetButton("Fire1") && Time.time >= nextTimeToFire)
+        if (inputToFire && Time.time >= nextTimeToFire)
         {
             // Check if gun has ammo
             if (currentAmmo > 0)
             {
+                // Play Shoot Audio
+                ShootAudio();
                 nextTimeToFire = Time.time + 1f / fireRate;
                 StartCoroutine(Shoot());
             }
@@ -92,7 +109,6 @@ public class Weapon : MonoBehaviour
     {
         RaycastHit hit;
 
-
         // Reduce ammo by 1
         currentAmmo--;
 
@@ -106,7 +122,6 @@ public class Weapon : MonoBehaviour
         if (animator != null)
         {
             animator.SetBool("isRecoil", true);
-
         }
 
         // Check if Raycast detects hit
@@ -118,13 +133,13 @@ public class Weapon : MonoBehaviour
 
             if (target != null)
             {
-                target.TakeDamage(damage);
+                target.gameObject.GetComponent<Health>().TakeDamage(damage);
+
                 if (impactEffect != null)
                 {
                     Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
                 }
             }
-
         }
 
         // Come back once the recoil animation is done and next fire available
@@ -132,6 +147,14 @@ public class Weapon : MonoBehaviour
         if (animator != null)
         {
             animator.SetBool("isRecoil", false);
+        }
+    }
+
+    private void  ShootAudio()
+    {
+        if (shootAudio != null)
+        {
+            shootAudio.PlayOneShot(shootAudio.clip);
         }
     }
 }

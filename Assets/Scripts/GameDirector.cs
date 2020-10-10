@@ -10,7 +10,8 @@ public class GameDirector : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for (int counter = 0; counter < 2; counter++)
+        
+        for (int counter = 0; counter < 1; counter++)
         {
             Debug.Log("Creating Chongus...");
             var newChongus = Instantiate(bigChongus, player.transform.position, Quaternion.identity) as GameObject;
