@@ -6,6 +6,7 @@ public class GameDirector : MonoBehaviour
 {
     public GameObject player;
     public GameObject bigChongus;
+    public GameObject BigChungus;
 
     // Start is called before the first frame update
     void Start()
@@ -24,4 +25,8 @@ public class GameDirector : MonoBehaviour
     {
         
     }
+
+
+
+
 }
