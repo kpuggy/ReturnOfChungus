@@ -41,7 +41,7 @@ public class EnemyDirector : MonoBehaviour
         // Move enemy in player direction
         Vector3 move = transform.right * x + transform.forward * z;
         enemyController.Move(move * speed * Time.deltaTime);
-        
+
         // Rotate enemy towards player
         Vector3 direction = playerTransform.position - enemyTransform.position;
         Quaternion rotation = Quaternion.LookRotation(direction);
